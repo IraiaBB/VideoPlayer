@@ -66,7 +66,8 @@ class DBconnection:
 
         return my_text
 
-    def artist_info(self, artist_id):
+    def artist_info(self, artist_id, id_song):
+        my_text=""
         my_cursor = self.mydb.cursor()
         # first we have to check whether it's a band or a soloist
         my_cursor.execute("SELECT COUNT(1) " +
@@ -79,13 +80,13 @@ class DBconnection:
 
             my_text = self.soloist(artist_id)
 
-            return my_text
-
         else:  # band
 
             my_text = self.band(artist_id)
 
-            return my_text
+        my_text = my_text + self.featured(id_song)
+
+        return my_text
 
     def soloist(self, artist_id):  # info extraction if it's a soloist
         my_text = ""
@@ -100,10 +101,10 @@ class DBconnection:
         solo_info = my_cursor.fetchall()
 
         for item in solo_info:
-            my_text = ("Artist: " + item[0] + "\nReal name: " + item[1] + " " + item[2] +
+            my_text = ("Primary artist: " + item[0] + "\nReal name: " + item[1] + " " + item[2] +
                        "\nBirth: " + str(item[3]) + "\nDeath: " + str(item[4]) + "\nOrigin: " + item[5])
 
-        return my_text
+        return my_text + "\n"
 
     def band(self, artist_id):
         my_text = ""
@@ -133,5 +134,23 @@ class DBconnection:
 
             if num % 2 and num is not len(members):
                 my_text = my_text + "\n"
+
+        return my_text + "\n"
+
+    def featured(self, id_song):
+        my_text = ""
+        my_cursor = self.mydb.cursor()
+
+        my_cursor.execute("SELECT public_name FROM artist " +
+                          "INNER JOIN feature ON artist.id_artist = feature.id_artist " +
+                          "WHERE feature.id_song = " + str(id_song) + ";")
+
+        ft_info = my_cursor.fetchall()
+
+        for num, item in enumerate(ft_info, start=1):
+            my_text = my_text + "Featured artist(s): " + item[0]
+
+            if num != len(ft_info):
+                my_text = my_text + ", "
 
         return my_text

@@ -215,7 +215,7 @@ class Main:
         self.set_lbl_song(self.lbl_song)
 
         self.lbl_artist = self.get_lbl_artist()
-        my_text2 = self.db_connection.artist_info(artist_id)  # query for artist's details
+        my_text2 = self.db_connection.artist_info(artist_id, song_id)  # query for artist's details
         self.lbl_artist.config(text=my_text2)
         self.set_lbl_artist(self.lbl_artist)
 
