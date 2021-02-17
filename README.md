@@ -69,5 +69,5 @@ the DBMS. Instead, a window will pop up with entry field in it, to fill with dat
 
 With the intention of separating languages and environments, the DB scripts are in another repository.
 There you can find the structure script, a sample data script and the EER diagram. All details
-explained in musicDB README.
+explained in [musicDB](https://github.com/IraiaBB/Music-DB) README.
 
